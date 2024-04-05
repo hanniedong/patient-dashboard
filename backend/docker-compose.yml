@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  app:
+    container_name: backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_NAME: test
+      DATABASE_USER: test
+      DATABASE_PASS: test
+      DATABASE_URI: mongodb://database:27017
+    ports:
+      - '4000:4000'
+    depends_on:
+      - database
+
+  # start the mongodb service as container
+  database:
+    image: mongo:6.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: test
+      MONGO_INITDB_ROOT_PASSWORD: test
