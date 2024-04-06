@@ -20,7 +20,7 @@ export const usePatientsContext = () => {
 };
 
 // Create the provider component
-export const PatientsProvider: React.FC = ({ children }) => {
+export const PatientsProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [patients, setPatients] = useState<Patient[]>([]); // Initialize patients state
 
   return (

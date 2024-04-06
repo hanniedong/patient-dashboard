@@ -8,6 +8,7 @@ import { usePatientsContext } from '@/context/PatientContext';
 const PatientList: React.FC = () => {
   const { patients, setPatients } = usePatientsContext();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
 	const handleDrawerToggle = () => {
 		console.log('HIT');
@@ -25,7 +26,7 @@ const PatientList: React.FC = () => {
 		};
 
 		fetchData();
-	}, [isDrawerOpen]);
+	}, []);
 
 	const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
 

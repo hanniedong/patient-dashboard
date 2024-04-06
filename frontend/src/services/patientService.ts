@@ -23,6 +23,22 @@ const patientService = {
 		});
 		return response.data;
 	},
+	updatePatient: async (patientData: any) => {
+		console.log(patientData);
+		const response = await axios.put<Patient>(
+			`${BASE_URL}/patients/${patientData.id}`,
+			{
+				...patientData,
+			}
+		);
+		return response.data;
+	},
+	deletePatient: async (patientId: string) => {
+		const response = await axios.delete<Patient>(
+			`${BASE_URL}/patients/${patientId}`
+		);
+		return response.data;
+	},
 };
 
 export default patientService;
