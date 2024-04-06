@@ -1,6 +1,7 @@
 import React from 'react';
 import PatientList from '../components/PatientList'; // Assuming you have a PatientList component
 import "../app/globals.css";
+import { PatientsProvider } from '@/context/PatientContext';
 
 const Dashboard: React.FC = () => {
   return (
@@ -9,7 +10,9 @@ const Dashboard: React.FC = () => {
         <h2 className="text-xl font-semibold text-gray-800">Patient Dashboard</h2>
       </div>
       <div className="p-4">
-        <PatientList />
+        <PatientsProvider>
+          <PatientList />
+        </PatientsProvider>
       </div>
     </div>
   );

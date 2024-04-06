@@ -8,6 +8,7 @@ export class PatientsController {
 
   @Post()
   async create(@Body() createPatientDto: any) {
+    console.log('HIT');
     return this.patientsService.create(createPatientDto);
   }
 

@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import PatientRow from './PatientRow';
 import patientService from '../services/patientService';
 import { Patient } from '@/types/patient.interface';
-import PatientFormDrawer from './PatientDrawer';
+import PatientFormDrawer from './PatientFormDrawer';
+import { usePatientsContext } from '@/context/PatientContext';
 
 const PatientList: React.FC = () => {
-	const [patients, setPatients] = useState<Patient[]>([]);
+  const { patients, setPatients } = usePatientsContext();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
+		console.log('HIT');
 		setIsDrawerOpen(!isDrawerOpen);
 	};
 
@@ -23,7 +25,7 @@ const PatientList: React.FC = () => {
 		};
 
 		fetchData();
-	}, []);
+	}, [isDrawerOpen]);
 
 	const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
 
@@ -73,7 +75,7 @@ const PatientList: React.FC = () => {
 				<tbody className='bg-white divide-y divide-gray-200'>
 					{patients.map((patient) => (
 						<PatientRow
-							key={patient.id}
+							key={patient._id}
 							patient={patient}
 							hiddenColumns={hiddenColumns}
 						/>

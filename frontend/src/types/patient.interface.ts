@@ -3,9 +3,8 @@ export interface Patient {
 	firstName: string;
 	middleName: string;
 	lastName: string;
-	dateOfBirth: string;
+	dateOfBirth: Date;
 	status: string;
 	primaryAddress: string;
 	additionalAddresses: string[];
-	customFields: Record<string, string>;
 }

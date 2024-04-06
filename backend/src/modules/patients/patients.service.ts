@@ -11,6 +11,7 @@ export class PatientsService {
 
   async create(createPatientDto: any): Promise<Patient> {
     const createdPatient = new this.patientModel(createPatientDto);
+    console.log(createdPatient);
     return createdPatient.save();
   }
 
