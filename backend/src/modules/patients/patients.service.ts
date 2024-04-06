@@ -34,7 +34,11 @@ export class PatientsService {
   }
 
   async remove(id: string) {
-    const deletedPatient = await this.patientModel.deleteOne({ id }).exec();
+    console.log(id);
+    const deletedPatient = await this.patientModel
+      .deleteOne({ _id: id })
+      .exec();
+    console.log(deletedPatient);
     if (!deletedPatient) {
       throw new NotFoundException(`Patient with ID ${id} not found`);
     }

@@ -1,7 +1,7 @@
 import { Patient } from '@/types/patient.interface';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:4000'; // Update with your backend API base URL
+const BASE_URL = 'https://patient-dashboard-api-2e3cc5435e22.herokuapp.com'; // Update with your backend API base URL
 
 const patientService = {
 	getAllPatients: async (): Promise<Patient[]> => {
