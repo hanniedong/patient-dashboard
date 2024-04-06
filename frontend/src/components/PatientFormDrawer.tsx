@@ -33,11 +33,11 @@ const PatientFormDrawer: React.FC<Props> = ({ isEdit, patient }) => {
 		setFormData({ ...formData, [name]: value });
 	};
 
-const handleDateChange = (date: Date) => {
-  if (date) {
-    setFormData({ ...formData, dateOfBirth: date });
-  } 
-};
+	const handleDateChange = (date: Date) => {
+		if (date) {
+			setFormData({ ...formData, dateOfBirth: date });
+		}
+	};
 	const handleDrawerClose = () => {
 		setIsOpen(false);
 	};
@@ -89,7 +89,20 @@ const handleDateChange = (date: Date) => {
 						onClick={handleDrawerClose}
 						className='text-white hover:text-gray-200 focus:outline-none'
 					>
-						<XIcon />
+						<svg
+							xmlns='http://www.w3.org/2000/svg'
+							className='h-6 w-6'
+							fill='none'
+							viewBox='0 0 24 24'
+							stroke='currentColor'
+						>
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								strokeWidth='2'
+								d='M6 18L18 6M6 6l12 12'
+							/>
+						</svg>
 					</button>
 				</div>
 				<form onSubmit={handleSubmit} className='px-8 py-8'>
@@ -151,7 +164,7 @@ const handleDateChange = (date: Date) => {
 						<DatePicker
 							id='dateOfBirth'
 							value={formData.dateOfBirth}
-              // @ts-ignore
+							// @ts-ignore
 							onChange={handleDateChange}
 							dateFormat='MM/dd/yyyy'
 							placeholderText='MM/DD/YYYY'
@@ -213,6 +226,7 @@ const handleDateChange = (date: Date) => {
 						<button
 							type='button'
 							className='mr-2 bg-gray-200 text-gray-700 px-4 py-2 rounded-md'
+							onClick={handleDrawerClose}
 						>
 							Cancel
 						</button>
@@ -224,16 +238,16 @@ const handleDateChange = (date: Date) => {
 						</button>
 					</div>
 				</form>
-        <div className='flex items-center justify-center'>
-        {isEdit && (
-					<button
-						onClick={handleDelete}
-						className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded flex justify-center'
-					>
-						Delete
-					</button>
-				)}
-        </div>
+				<div className='flex items-center justify-center'>
+					{isEdit && (
+						<button
+							onClick={handleDelete}
+							className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded flex justify-center'
+						>
+							Delete
+						</button>
+					)}
+				</div>
 			</div>
 		</>
 	);
