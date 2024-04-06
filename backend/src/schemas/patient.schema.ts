@@ -6,6 +6,9 @@ export class Patient extends Document {
   @Prop({ required: true })
   firstName: string;
 
+  @Prop()
+  middleName: string;
+
   @Prop({ required: true })
   lastName: string;
 
@@ -18,8 +21,11 @@ export class Patient extends Document {
   })
   status: string;
 
+  @Prop(String)
+  primaryAddress: string;
+
   @Prop([String])
-  addresses: string[];
+  additionalAddresses: string[];
 
   @Prop({ type: Types.ObjectId, ref: 'Provider' }) // Reference to the Provider entity
   providerId: string; // You can also use Types.ObjectId type here

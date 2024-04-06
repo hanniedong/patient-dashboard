@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     environment:
-      DATABASE_NAME: test
+      DATABASE_NAME: patient-dashboard
       DATABASE_USER: test
       DATABASE_PASS: test
       DATABASE_URI: mongodb://database:27017

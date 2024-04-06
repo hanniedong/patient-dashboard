@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { Patient } from '../../schemas/patient.schema';
 
@@ -12,7 +12,11 @@ export class PatientsController {
   }
 
   @Get()
-  async findAll(): Promise<Patient[]> {
-    return this.patientsService.findAll();
+  async findAll(@Query('providerId') providerId?: string): Promise<Patient[]> {
+    if (providerId) {
+      return this.patientsService.findByProviderId(providerId);
+    } else {
+      throw Error('Need provider Id');
+    }
   }
 }

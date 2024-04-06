@@ -14,7 +14,7 @@ export class PatientsService {
     return createdPatient.save();
   }
 
-  async findAll(): Promise<Patient[]> {
-    return this.patientModel.find().exec();
+  async findByProviderId(providerId: string): Promise<Patient[]> {
+    return this.patientModel.find({ providerId }).exec();
   }
 }
