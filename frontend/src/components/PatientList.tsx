@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PatientRow from './PatientRow';
 import patientService from '../services/patientService';
 import { Patient } from '@/types/patient.interface';
 import PatientFormDrawer from './PatientFormDrawer';
 import { usePatientsContext } from '@/context/PatientContext';
+import Search from './Search';
 
 const PatientList: React.FC = () => {
   const { patients, setPatients } = usePatientsContext();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
 
 	const handleDrawerToggle = () => {
-		console.log('HIT');
 		setIsDrawerOpen(!isDrawerOpen);
 	};
 
@@ -38,6 +37,22 @@ const PatientList: React.FC = () => {
 		}
 	};
 
+  const handleSearch = async (searchQuery: {
+    firstName: string;
+    lastName: string;
+    status: string;
+  }) => {
+    try {
+      const data = await patientService.getAllPatients(searchQuery);
+      setPatients(data);
+    } catch (error) {
+      console.error('Error fetching patient data:', error);
+    }
+  };
+
+	const cachedPatients = useMemo(() => patients, [patients]);
+
+
 	const columnNames = [
 		'firstName',
 		'middleName',
@@ -57,6 +72,7 @@ const PatientList: React.FC = () => {
 				Add Patient
 			</button>
 			{isDrawerOpen && <PatientFormDrawer />}
+      <Search onSearch={handleSearch}/>
 			<table className='min-w-full divide-y divide-gray-200'>
 				<thead className='bg-gray-50'>
 					<tr>
@@ -74,7 +90,7 @@ const PatientList: React.FC = () => {
 					</tr>
 				</thead>
 				<tbody className='bg-white divide-y divide-gray-200'>
-					{patients.map((patient) => (
+					{cachedPatients.map((patient) => (
 						<PatientRow
 							key={patient._id}
 							patient={patient}

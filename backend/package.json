@@ -29,6 +29,7 @@
     "@nestjs/mongoose": "^10.0.5",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.3.1",
+    "date-fns": "^3.6.0",
     "mongoose": "^8.3.0",
     "nestjs-seeder": "^0.3.2",
     "reflect-metadata": "^0.1.13",

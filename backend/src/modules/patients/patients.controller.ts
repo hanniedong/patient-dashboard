@@ -26,9 +26,25 @@ export class PatientsController {
   }
 
   @Get()
-  async findAll(@Query('providerId') providerId?: string): Promise<Patient[]> {
+  async findAll(
+    @Query('providerId') providerId: string,
+    @Query('search')
+    search: {
+      firstName: string;
+      lastName: string;
+      status: string;
+      minAge: number;
+      maxAge: number;
+    },
+  ): Promise<Patient[]> {
+    console.log('HIT');
     if (providerId) {
-      return this.patientsService.findByProviderId(providerId);
+      if (search) {
+        console.log(search);
+        return await this.patientsService.search(providerId, search);
+      } else {
+        return this.patientsService.findByProviderId(providerId);
+      }
     } else {
       throw Error('Need provider Id');
     }

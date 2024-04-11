@@ -3,6 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Patient } from '../../schemas/patient.schema';
 import { UpdatePatientDto } from './dto/update-patient.dto';
+import { getBirthYearRange } from './patients.helper';
+
+interface SearchQuery {
+  firstName?: string;
+  lastName?: string;
+  providerId: string;
+  status?: string;
+  dateOfBirth?: { $gte: Date; $lte: Date };
+}
 
 @Injectable()
 export class PatientsService {
@@ -12,7 +21,6 @@ export class PatientsService {
 
   async create(createPatientDto: any): Promise<Patient> {
     const createdPatient = new this.patientModel(createPatientDto);
-    console.log(createdPatient);
     return createdPatient.save();
   }
 
@@ -34,13 +42,47 @@ export class PatientsService {
   }
 
   async remove(id: string) {
-    console.log(id);
     const deletedPatient = await this.patientModel
       .deleteOne({ _id: id })
       .exec();
-    console.log(deletedPatient);
     if (!deletedPatient) {
       throw new NotFoundException(`Patient with ID ${id} not found`);
     }
+  }
+
+  async search(
+    providerId: string,
+    search: {
+      firstName: string;
+      lastName: string;
+      status: string;
+      minAge: number;
+      maxAge: number;
+    },
+  ): Promise<Patient[]> {
+    const query: SearchQuery = { providerId };
+    if (search.firstName) {
+      query.firstName = search.firstName;
+    }
+    if (search.lastName) {
+      query.lastName = search.lastName;
+    }
+    if (search.status) {
+      query.status = search.status;
+    }
+    if (search.minAge || search.maxAge) {
+      const [minDate, maxDate] = getBirthYearRange(
+        search.minAge,
+        search.maxAge,
+      );
+      query.dateOfBirth = { $gte: minDate, $lte: maxDate };
+      console.log(query.dateOfBirth);
+    }
+    if (search.status) {
+      query.status = search.status;
+    }
+    console.log(query);
+    const patients = await this.patientModel.find(query).exec();
+    return patients;
   }
 }
