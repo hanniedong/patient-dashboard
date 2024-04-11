@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Provider, ProviderSchema } from '../../schemas/provider.schema';
+import { Provider, ProviderSchema } from '../schemas/provider.schema';
 import { ProvidersController } from './providers.controller';
 import { ProvidersService } from './providers.service';
 

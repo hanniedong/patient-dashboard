@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 @Schema({
-  collection: 'provider_custom_fields',
+  collection: 'providers_custom_fields',
   timestamps: true,
 })
 export class ProviderCustomField extends Document {
@@ -16,5 +16,5 @@ export class ProviderCustomField extends Document {
   providerId: string;
 }
 
-export const CustomFieldSchema =
+export const ProviderCustomFieldSchema =
   SchemaFactory.createForClass(ProviderCustomField);

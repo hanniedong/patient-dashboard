@@ -7,4 +7,5 @@ export interface Patient {
 	status: string;
 	primaryAddress: string;
 	additionalAddresses: string[];
+	customFields: { name: string; type: string; value: string | number }[];
 }

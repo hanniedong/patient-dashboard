@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
@@ -6,6 +6,7 @@ import patientService from '@/services/patientService';
 import { usePatientsContext } from '@/context/PatientContext';
 import XIcon from '@/assets/icons/XIcon';
 import { Patient } from '@/types/patient.interface';
+import { useProviderCustomFieldsContext } from '@/context/ProviderCustomFieldsContext';
 
 interface Props {
 	patient?: Patient;
@@ -13,6 +14,19 @@ interface Props {
 }
 const PatientFormDrawer: React.FC<Props> = ({ isEdit, patient }) => {
 	const { patients, setPatients } = usePatientsContext();
+	const { providerCustomFields, setProviderCustomFields } =
+		useProviderCustomFieldsContext();
+	const customFields: any = {};
+	console.log(providerCustomFields);
+
+	providerCustomFields.forEach((customField) => {
+		const name = customField.name;
+		const type = customField.type === 'text' ? '' : undefined;
+		console.log(customField);
+		customFields[name] = type;
+	});
+
+	console.log(customFields);
 	const [formData, setFormData] = useState({
 		id: patient?._id || '',
 		firstName: patient?.firstName || '',
@@ -22,9 +36,18 @@ const PatientFormDrawer: React.FC<Props> = ({ isEdit, patient }) => {
 		primaryAddress: patient?.primaryAddress || '',
 		additionalAddresses: patient?.additionalAddresses || [],
 		dateOfBirth: patient?.dateOfBirth || (null as Date | null), // Explicitly set dateOfBirth type to Date | null
+		customFields,
 	});
 
+console.log(formData)
 	const [isOpen, setIsOpen] = useState(true);
+
+	const handleCustomFieldsChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+	) => {
+		const { name, value } = e.target;
+		setFormData({ ...formData, customFields: { ...formData.customFields, [name]: value } });
+	};
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -222,6 +245,27 @@ const PatientFormDrawer: React.FC<Props> = ({ isEdit, patient }) => {
 							className='mt-1 p-1 border border-gray-300 rounded-md w-full'
 						/>
 					</div>
+					{providerCustomFields.length !==0 && providerCustomFields.map((customField) => {
+						const name = customField.name
+						const formValue = formData?.customFields[name]?.value
+						return(
+						<div className='mb-4' key={customField._id}>
+							<label
+								htmlFor={name}
+								className='block text-sm font-medium text-gray-700'
+							>
+								{name}
+							</label>
+							<input
+								type={customField.type}
+								name={name}
+								id={name}
+								value={formValue}
+								onChange={handleCustomFieldsChange}
+								className='mt-1 p-1 border border-gray-300 rounded-md w-full'
+							/>
+						</div>
+					)})}
 					<div className='mt-4 flex justify-end'>
 						<button
 							type='button'

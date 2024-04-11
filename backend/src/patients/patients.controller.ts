@@ -12,7 +12,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { PatientsService } from './patients.service';
-import { Patient } from '../../schemas/patient.schema';
+import { Patient } from '../schemas/patient.schema';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 
 @Controller('patients')

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Patient } from '../../schemas/patient.schema';
+import { Patient } from '../schemas/patient.schema';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { getBirthYearRange } from './patients.helper';
 

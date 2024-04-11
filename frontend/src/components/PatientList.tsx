@@ -1,24 +1,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PatientRow from './PatientRow';
 import patientService from '../services/patientService';
-import { Patient } from '@/types/patient.interface';
-import PatientFormDrawer from './PatientFormDrawer';
 import { usePatientsContext } from '@/context/PatientContext';
 import Search from './Search';
+import { useProviderCustomFieldsContext } from '@/context/ProviderCustomFieldsContext';
+import providerCustomFieldService from '@/services/providerCustomFieldService';
 
 const PatientList: React.FC = () => {
-  const { patients, setPatients } = usePatientsContext();
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-	const handleDrawerToggle = () => {
-		setIsDrawerOpen(!isDrawerOpen);
-	};
+	const { patients, setPatients } = usePatientsContext();
+	const { providerCustomFields, setProviderCustomFields } =
+		useProviderCustomFieldsContext();
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const data = await patientService.getAllPatients();
+				const fieldData =
+					await providerCustomFieldService.getAllProviderCustomFields();
 				setPatients(data);
+				console.log(fieldData);
+				setProviderCustomFields(fieldData);
 			} catch (error) {
 				console.error('Error fetching patient data:', error);
 			}
@@ -37,21 +38,25 @@ const PatientList: React.FC = () => {
 		}
 	};
 
-  const handleSearch = async (searchQuery: {
-    firstName: string;
-    lastName: string;
-    status: string;
-  }) => {
-    try {
-      const data = await patientService.getAllPatients(searchQuery);
-      setPatients(data);
-    } catch (error) {
-      console.error('Error fetching patient data:', error);
-    }
-  };
+	const handleSearch = async (searchQuery: {
+		firstName: string;
+		lastName: string;
+		status: string;
+	}) => {
+		try {
+			const data = await patientService.getAllPatients(searchQuery);
+			setPatients(data);
+		} catch (error) {
+			console.error('Error fetching patient data:', error);
+		}
+	};
 
 	const cachedPatients = useMemo(() => patients, [patients]);
 
+	const customFields = useMemo(
+		() => providerCustomFields.map((customField) => customField.name),
+		[providerCustomFields]
+	);
 
 	const columnNames = [
 		'firstName',
@@ -61,18 +66,13 @@ const PatientList: React.FC = () => {
 		'primaryAddress',
 		'additionalAddresses',
 		'dateOfBirth',
+		...customFields,
 	]; // Add more column names as needed
 
+	console.log(patients);
 	return (
 		<div className='overflow-x-auto'>
-			<button
-				onClick={handleDrawerToggle}
-				className='bg-blue-500 text-white px-4 py-2 rounded shadow ml-4'
-			>
-				Add Patient
-			</button>
-			{isDrawerOpen && <PatientFormDrawer />}
-      <Search onSearch={handleSearch}/>
+			<Search onSearch={handleSearch} />
 			<table className='min-w-full divide-y divide-gray-200'>
 				<thead className='bg-gray-50'>
 					<tr>
@@ -95,6 +95,7 @@ const PatientList: React.FC = () => {
 							key={patient._id}
 							patient={patient}
 							hiddenColumns={hiddenColumns}
+							columns={columnNames}
 						/>
 					))}
 				</tbody>

@@ -5,9 +5,10 @@ import PatientFormDrawer from './PatientFormDrawer';
 interface Props {
 	patient: Patient;
 	hiddenColumns: string[];
+	columns: string[];
 }
 
-const PatientRow: React.FC<Props> = ({ patient, hiddenColumns }) => {
+const PatientRow: React.FC<Props> = ({ patient, hiddenColumns, columns }) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	const handleClick = () => {
@@ -55,7 +56,6 @@ const PatientRow: React.FC<Props> = ({ patient, hiddenColumns }) => {
 		if (hiddenColumns.includes(columnName)) {
 			return null; // Don't render the column if it's hidden
 		}
-
 		switch (columnName) {
 			case 'firstName':
 				return <td>{patient.firstName}</td>;
@@ -72,7 +72,13 @@ const PatientRow: React.FC<Props> = ({ patient, hiddenColumns }) => {
 			case 'dateOfBirth':
 				return <td>{formattedDateOfBirth}</td>;
 			default:
-				return null;
+				if (patient.customFields) {
+					for (const [key, value] of Object.entries(patient.customFields)) {
+						if(key === columnName){
+							return <td>{value}</td>;
+						}
+					}
+				}
 		}
 	};
 
@@ -80,18 +86,8 @@ const PatientRow: React.FC<Props> = ({ patient, hiddenColumns }) => {
 		<>
 			{isDrawerOpen && <PatientFormDrawer isEdit patient={patient} />}
 			<tr onClick={handleClick}>
-				{[
-					'firstName',
-					'middleName',
-					'lastName',
-					'status',
-					'primaryAddress',
-					'additionalAddresses',
-					'dateOfBirth',
-				].map((columnName) => (
-					<React.Fragment key={columnName}>
-						{renderColumn(columnName)}
-					</React.Fragment>
+				{columns.map((column) => (
+					<React.Fragment key={column}>{renderColumn(column)}</React.Fragment>
 				))}
 			</tr>
 		</>
