@@ -4,7 +4,6 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import patientService from '@/services/patientService';
 import { usePatientsContext } from '@/context/PatientContext';
-import XIcon from '@/assets/icons/XIcon';
 import { Patient } from '@/types/patient.interface';
 import { useProviderCustomFieldsContext } from '@/context/ProviderCustomFieldsContext';
 
@@ -17,16 +16,13 @@ const PatientFormDrawer: React.FC<Props> = ({ isEdit, patient }) => {
 	const { providerCustomFields, setProviderCustomFields } =
 		useProviderCustomFieldsContext();
 	const customFields: any = {};
-	console.log(providerCustomFields);
 
 	providerCustomFields.forEach((customField) => {
 		const name = customField.name;
 		const type = customField.type === 'text' ? '' : undefined;
-		console.log(customField);
 		customFields[name] = type;
 	});
 
-	console.log(customFields);
 	const [formData, setFormData] = useState({
 		id: patient?._id || '',
 		firstName: patient?.firstName || '',
@@ -101,10 +97,10 @@ console.log(formData)
 		<>
 			<div
 				className={`fixed inset-y-0 right-0 w-1/2 bg-white shadow-lg transform transition-transform ${
-					isOpen ? 'translate-x-0' : 'translate-x-full'
+					isOpen ? 'translate-x-0 z-50' : 'translate-x-full'
 				}`}
 			>
-				<div className='flex items-center justify-between px-4 py-2 bg-blue-500 text-white'>
+				<div className='flex items-center justify-between px-4 py-2 bg-blue-500 text-white '>
 					<h2 className='text-xl font-semibold'>
 						{isEdit ? patient?.firstName : 'New Patient'}
 					</h2>
@@ -128,7 +124,7 @@ console.log(formData)
 						</svg>
 					</button>
 				</div>
-				<form onSubmit={handleSubmit} className='px-8 py-8'>
+				<form onSubmit={handleSubmit} className='px-8 py-8 overflow-y-auto max-h-[calc(100vh-4rem)]'>
 					<div className='mb-4'>
 						<label
 							htmlFor='firstName'

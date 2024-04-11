@@ -5,6 +5,7 @@ import { usePatientsContext } from '@/context/PatientContext';
 import Search from './Search';
 import { useProviderCustomFieldsContext } from '@/context/ProviderCustomFieldsContext';
 import providerCustomFieldService from '@/services/providerCustomFieldService';
+import ColumnsDropdown from './ColumnsDropdown';
 
 const PatientList: React.FC = () => {
 	const { patients, setPatients } = usePatientsContext();
@@ -69,10 +70,21 @@ const PatientList: React.FC = () => {
 		...customFields,
 	]; // Add more column names as needed
 
-	console.log(patients);
+	const formatColumnNames = (columnName: string) => {
+		const string = columnName.split(/(?=[A-Z])/).join(' ');
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	};
+
 	return (
-		<div className='overflow-x-auto'>
-			<Search onSearch={handleSearch} />
+		<div className='overflow-x-auto m-10'>
+			<div className='flex items-center my-10'>
+				<Search onSearch={handleSearch} />
+				<ColumnsDropdown
+					columnNames={columnNames}
+					hiddenColumns={hiddenColumns}
+					handleColumnToggle={handleColumnToggle}
+				/>
+			</div>
 			<table className='min-w-full divide-y divide-gray-200'>
 				<thead className='bg-gray-50'>
 					<tr>
@@ -84,7 +96,7 @@ const PatientList: React.FC = () => {
 									hiddenColumns.includes(columnName) ? 'hidden' : ''
 								}`}
 							>
-								{columnName.charAt(0).toUpperCase() + columnName.slice(1)}
+								{formatColumnNames(columnName)}
 							</th>
 						))}
 					</tr>
@@ -100,22 +112,6 @@ const PatientList: React.FC = () => {
 					))}
 				</tbody>
 			</table>
-			<div className='mt-4'>
-				<span className='mr-2'>Hide Columns:</span>
-				{columnNames.map((columnName) => (
-					<button
-						key={columnName}
-						className={`border border-gray-300 rounded-md px-2 ${
-							hiddenColumns.includes(columnName)
-								? 'bg-red-500 text-white'
-								: 'bg-gray-200'
-						}`}
-						onClick={() => handleColumnToggle(columnName)}
-					>
-						{columnName.charAt(0).toUpperCase() + columnName.slice(1)}
-					</button>
-				))}
-			</div>
 		</div>
 	);
 };
