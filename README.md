@@ -1,5 +1,7 @@
 # Patient Management System
 
+The Advanced Patient Data Management System is a comprehensive web-based solution designed to provide healthcare providers with an improved platform for efficiently managing and viewing critical patient data. Providers require seamless access to patient information, including standard fields such as Names, Date of Birth, Status, Address, as well as the ability to customize additional fields dynamically.
+
 ## Functional Requirements:
 
 ### Streamlined Data Entry:
@@ -26,8 +28,6 @@
   - Enable simple field equality search to quickly retrieve specific patient records based on various criteria.
 - **Filtering Options:**
   - Implement field filtering to facilitate refined searches based on specific parameters.
-- **Usability Prioritization:**
-  - Prioritize ease of use and efficiency in search functionality to enhance provider productivity.
 
 ## Technologies Used:
 - React.js/ Next.js for front-end development.
