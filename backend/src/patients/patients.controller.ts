@@ -21,8 +21,11 @@ export class PatientsController {
 
   @Post()
   async create(@Body() createPatientDto: any) {
-    console.log('HIT');
-    return this.patientsService.create(createPatientDto);
+    try {
+      return await this.patientsService.create(createPatientDto);
+    } catch (e) {
+      throw new InternalServerErrorException('Internal server error', e);
+    }
   }
 
   @Get()
@@ -38,16 +41,18 @@ export class PatientsController {
       city: string;
     },
   ): Promise<Patient[]> {
-    console.log('HIT');
-    if (providerId) {
-      if (search) {
-        console.log(search);
-        return await this.patientsService.search(providerId, search);
+    try {
+      if (providerId) {
+        if (search) {
+          return await this.patientsService.search(providerId, search);
+        } else {
+          return await this.patientsService.findByProviderId(providerId);
+        }
       } else {
-        return this.patientsService.findByProviderId(providerId);
+        throw new BadRequestException('Need Provider Id');
       }
-    } else {
-      throw Error('Need provider Id');
+    } catch (e) {
+      throw new InternalServerErrorException('Internal server error', e);
     }
   }
 
@@ -68,7 +73,7 @@ export class PatientsController {
       } else if (error instanceof BadRequestException) {
         throw new BadRequestException('Invalid request body');
       } else {
-        throw new InternalServerErrorException('Internal server error');
+        throw new InternalServerErrorException('Internal server error', error);
       }
     }
   }
@@ -76,12 +81,12 @@ export class PatientsController {
   async remove(@Param('id') id: string) {
     try {
       const deletedPatient = await this.patientsService.remove(id);
-      return { message: 'Patient deleted successfully', deletedPatient };
+      return { deletedPatient };
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
       }
-      throw error;
+      throw new InternalServerErrorException('Internal server error', error);
     }
   }
 }

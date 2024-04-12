@@ -1,4 +1,4 @@
 export class CreateProviderCustomFieldDto {
-  readonly name: string;
-  readonly type: string;
+  name: string;
+  type: string;
 }

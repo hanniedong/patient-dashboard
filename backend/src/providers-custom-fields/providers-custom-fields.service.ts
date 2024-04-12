@@ -14,7 +14,6 @@ export class ProvidersCustomFieldsService {
   async create(
     createProviderCustomFieldDto: CreateProviderCustomFieldDto,
   ): Promise<ProviderCustomField> {
-    console.log(createProviderCustomFieldDto);
     const createdProviderCustomField = new this.providerCustomFieldModel(
       createProviderCustomFieldDto,
     );

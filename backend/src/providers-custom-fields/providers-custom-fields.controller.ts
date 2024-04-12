@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ProvidersCustomFieldsService } from './providers-custom-fields.service';
 import { CreateProviderCustomFieldDto } from './dto/create-provider-custom-field.dto';
 import { ProviderCustomField } from 'src/schemas/provider-custom-field.schema';
@@ -10,16 +17,26 @@ export class ProvidersCustomFieldsController {
   ) {}
 
   @Post()
-  create(@Body() createProviderCustomFieldDto: CreateProviderCustomFieldDto) {
-    return this.providersCustomFieldsService.create(
-      createProviderCustomFieldDto,
-    );
+  async create(
+    @Body() createProviderCustomFieldDto: CreateProviderCustomFieldDto,
+  ) {
+    try {
+      return await this.providersCustomFieldsService.create(
+        createProviderCustomFieldDto,
+      );
+    } catch (e) {
+      throw new InternalServerErrorException('Internal server error', e);
+    }
   }
 
   @Get()
   async findAll(
     @Query('providerId') providerId: string,
   ): Promise<ProviderCustomField[]> {
-    return this.providersCustomFieldsService.findAll(providerId);
+    try {
+      return await this.providersCustomFieldsService.findAll(providerId);
+    } catch (e) {
+      throw new InternalServerErrorException('Internal server error', e);
+    }
   }
 }

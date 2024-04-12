@@ -78,7 +78,6 @@ export class PatientsService {
         search.maxAge,
       );
       query.dateOfBirth = { $gte: minDate, $lte: maxDate };
-      console.log(query.dateOfBirth);
     }
     if (search.status) {
       query.status = search.status;

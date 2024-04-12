@@ -37,7 +37,7 @@ export class Patient extends Document {
   additionalAddress: object;
 
   @Prop({ type: Types.ObjectId, ref: 'Provider' }) // Reference to the Provider entity
-  providerId: string; // You can also use Types.ObjectId type here
+  providerId: string;
 
   @Prop({ type: Map, of: String })
   customFields: Record<string, string>;
