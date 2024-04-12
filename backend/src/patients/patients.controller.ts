@@ -35,6 +35,7 @@ export class PatientsController {
       status: string;
       minAge: number;
       maxAge: number;
+      city: string;
     },
   ): Promise<Patient[]> {
     console.log('HIT');

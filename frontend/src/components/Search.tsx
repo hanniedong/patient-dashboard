@@ -6,6 +6,7 @@ interface SearchFilters {
 	status: string;
 	minAge: number | string;
 	maxAge: number | string;
+	city: string;
 }
 
 interface SearchProps {
@@ -20,6 +21,7 @@ const Search: React.FC<SearchProps> = ({ onSearch, clearFilters }) => {
 		status: '',
 		minAge: '',
 		maxAge: '',
+		city: ''
 	});
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +44,7 @@ const Search: React.FC<SearchProps> = ({ onSearch, clearFilters }) => {
 			status: '',
 			minAge: '',
 			maxAge: '',
+			city: '',
 		});
 
 		setFilters({
@@ -50,12 +53,11 @@ const Search: React.FC<SearchProps> = ({ onSearch, clearFilters }) => {
 			status: '',
 			minAge: '',
 			maxAge: '',
+			city: '',
 		})
 
 	};
 
-	const statusOptions = ['Inquiry', 'Onboarding', 'Active', 'Churned'];
-console.log(filters.minAge)
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className='flex items-center space-x-4'>
@@ -76,6 +78,16 @@ console.log(filters.minAge)
 						value={filters.lastName}
 						onChange={handleChange}
 						placeholder='Last Name'
+						className='border border-gray-300 rounded px-3 py-2 w-48 placeholder-gray-500 focus:outline-none focus:border-blue-500'
+					/>
+				</div>
+				<div className='relative'>
+					<input
+						type='text'
+						name='city'
+						value={filters.city}
+						onChange={handleChange}
+						placeholder='City'
 						className='border border-gray-300 rounded px-3 py-2 w-48 placeholder-gray-500 focus:outline-none focus:border-blue-500'
 					/>
 				</div>

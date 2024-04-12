@@ -11,6 +11,7 @@ interface SearchQuery {
   providerId: string;
   status?: string;
   dateOfBirth?: { $gte: Date; $lte: Date };
+  city?: string;
 }
 
 @Injectable()
@@ -53,6 +54,7 @@ export class PatientsService {
   async search(
     providerId: string,
     search: {
+      city: string;
       firstName: string;
       lastName: string;
       status: string;
@@ -81,7 +83,9 @@ export class PatientsService {
     if (search.status) {
       query.status = search.status;
     }
-    console.log(query);
+    if (search.city) {
+      query.city = search.city;
+    }
     const patients = await this.patientModel.find(query).exec();
     return patients;
   }

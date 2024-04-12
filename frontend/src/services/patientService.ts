@@ -10,6 +10,7 @@ const patientService = {
 		status: string;
 		minAge: number;
 		maxAge: number;
+		city: string;
 	}): Promise<Patient[]> => {
 		try {
 			const response = await axios.get<Patient[]>(

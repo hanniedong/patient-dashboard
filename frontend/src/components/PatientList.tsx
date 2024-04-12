@@ -43,6 +43,9 @@ const PatientList: React.FC = () => {
 		firstName: string;
 		lastName: string;
 		status: string;
+		minAge: number;
+		maxAge: number;
+		city: string;
 	}) => {
 		try {
 			const data = await patientService.getAllPatients(searchQuery);
