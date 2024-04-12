@@ -87,8 +87,9 @@ const PatientRow: React.FC<Props> = ({ patient, hiddenColumns, columns }) => {
 
 			default:
 				if (patient.customFields) {
+					//@ts-ignore
 					const customFieldValue = patient.customFields[columnName];
-					if (customFieldValue !== undefined) {
+					if (customFieldValue) {
 						return <td>{customFieldValue}</td>;
 					} else {
 						return null;

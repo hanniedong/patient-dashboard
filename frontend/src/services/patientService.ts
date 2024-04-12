@@ -5,12 +5,12 @@ import { BASE_URL, PROVIDER_ID } from './constants';
 const DEV_URL = 'http://localhost:4000';
 const patientService = {
 	getAllPatients: async (searchQuery?: {
-		firstName: string;
-		lastName: string;
-		status: string;
-		minAge: number;
-		maxAge: number;
-		city: string;
+		firstName?: string;
+		lastName?: string;
+		status?: string;
+		minAge?: number;
+		maxAge?: number;
+		city?: string;
 	}): Promise<Patient[]> => {
 		try {
 			const response = await axios.get<Patient[]>(

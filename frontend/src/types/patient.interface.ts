@@ -3,7 +3,7 @@ export interface Patient {
 	firstName: string;
 	middleName: string;
 	lastName: string;
-	dateOfBirth: Date | undefined;
+	dateOfBirth: Date;
 	status: string;
 	street: string;
 	city: string;

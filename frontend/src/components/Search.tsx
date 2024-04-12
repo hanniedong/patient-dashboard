@@ -4,23 +4,22 @@ interface SearchFilters {
 	firstName: string;
 	lastName: string;
 	status: string;
-	minAge: number | string;
-	maxAge: number | string;
+	minAge: number | undefined;
+	maxAge: number | undefined;
 	city: string;
 }
 
 interface SearchProps {
 	onSearch: (filters: SearchFilters) => void;
-	clearFilters:() => void;
 }
 
-const Search: React.FC<SearchProps> = ({ onSearch, clearFilters }) => {
+const Search: React.FC<SearchProps> = ({ onSearch }) => {
 	const [filters, setFilters] = useState<SearchFilters>({
 		firstName: '',
 		lastName: '',
 		status: '',
-		minAge: '',
-		maxAge: '',
+		minAge: undefined,
+		maxAge: undefined,
 		city: ''
 	});
 
@@ -41,8 +40,8 @@ const Search: React.FC<SearchProps> = ({ onSearch, clearFilters }) => {
 			firstName: '',
 			lastName: '',
 			status: '',
-			minAge: '',
-			maxAge: '',
+			minAge: undefined,
+			maxAge: undefined,
 			city: '',
 		}
 
