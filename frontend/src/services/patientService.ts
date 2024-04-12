@@ -1,8 +1,7 @@
 import { Patient } from '@/types/patient.interface';
 import axios from 'axios';
+import { BASE_URL, PROVIDER_ID } from './constants';
 
-const BASE_URL = 'https://patient-dashboard-api-2e3cc5435e22.herokuapp.com'; // Update with your backend API base URL
-const DEV_URL = 'http://localhost:4000';
 const patientService = {
 	getAllPatients: async (searchQuery?: {
 		firstName: string;
@@ -14,7 +13,7 @@ const patientService = {
 	}): Promise<Patient[]> => {
 		try {
 			const response = await axios.get<Patient[]>(
-				`${DEV_URL}/patients?providerId=6610a8796dacee7e4a036f64`,
+				`${BASE_URL}/patients?providerId=${PROVIDER_ID}`,
 				{
 					params: {
 						search: searchQuery,
@@ -28,15 +27,13 @@ const patientService = {
 		}
 	},
 	createPatient: async (patientData: any) => {
-		console.log(patientData);
-		const response = await axios.post<Patient>(`${DEV_URL}/patients`, {
+		const response = await axios.post<Patient>(`${BASE_URL}/patients`, {
 			...patientData,
-			providerId: '6610a8796dacee7e4a036f64',
+			providerId: PROVIDER_ID,
 		});
 		return response.data;
 	},
 	updatePatient: async (patientData: any) => {
-		console.log(patientData);
 		const response = await axios.put<Patient>(
 			`${BASE_URL}/patients/${patientData.id}`,
 			{
