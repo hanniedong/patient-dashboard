@@ -43,3 +43,11 @@ Application Available Here: https://patient-dashboard-front-end.vercel.app
 - RESTful API architecture for communication between front-end and back-end.
 - TailwindCSS
 - Heroku and Vercel for deployment
+
+## Future Improvements:
+- Authentication
+- Search optimization (cache layer)
+- UI updates
+- Datepicker updates
+- Form validations
+
