@@ -17,6 +17,11 @@ const ColumnsDropdown: React.FC<Props> = ({
     setShouldShowMenu(!shouldShowMenu);
   };
 
+  const formatColumnNames = (columnName: string) => {
+    const string = columnName.split(/(?=[A-Z])/).join(' ');
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <div
       className='absolute right-20 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-2'
@@ -51,7 +56,7 @@ const ColumnsDropdown: React.FC<Props> = ({
                   id={columnName}
                 />
                 <label htmlFor={columnName} className='text-sm text-gray-700'>
-                  {columnName}
+                  {formatColumnNames(columnName)}
                 </label>
               </div>
             ))}
