@@ -2,6 +2,7 @@ import { Patient } from '@/types/patient.interface';
 import axios from 'axios';
 import { BASE_URL, PROVIDER_ID } from './constants';
 
+const DEV_URL = 'http://localhost:4000';
 const patientService = {
 	getAllPatients: async (searchQuery?: {
 		firstName: string;
@@ -26,16 +27,17 @@ const patientService = {
 			throw error;
 		}
 	},
-	createPatient: async (patientData: any) => {
-		const response = await axios.post<Patient>(`${BASE_URL}/patients`, {
-			...patientData,
+	createPatient: async (patientData: Patient) => {
+		const { _id, ...data } = patientData;
+		const response = await axios.post<Patient>(`${DEV_URL}/patients`, {
+			...data,
 			providerId: PROVIDER_ID,
 		});
 		return response.data;
 	},
-	updatePatient: async (patientData: any) => {
+	updatePatient: async (patientData: Patient) => {
 		const response = await axios.put<Patient>(
-			`${BASE_URL}/patients/${patientData.id}`,
+			`${BASE_URL}/patients/${patientData._id}`,
 			{
 				...patientData,
 			}

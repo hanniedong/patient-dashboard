@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PatientFormDrawer from './PatientFormDrawer';
+import PatientForm from './PatientForm';
 
 const AddPatient: React.FC = () => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -16,7 +16,7 @@ const AddPatient: React.FC = () => {
 			>
 				Add Patient
 			</button>
-			{isDrawerOpen && <PatientFormDrawer />}
+			{isDrawerOpen && <PatientForm />}
     </div>
 	);
 };

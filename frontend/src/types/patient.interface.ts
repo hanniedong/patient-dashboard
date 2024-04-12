@@ -3,17 +3,21 @@ export interface Patient {
 	firstName: string;
 	middleName: string;
 	lastName: string;
-	dateOfBirth: Date;
+	dateOfBirth: Date | undefined;
 	status: string;
 	street: string;
 	city: string;
-	zipCode: number;
+	zipCode: number | undefined;
 	state: string;
 	additionalAddress: {
 		street: string;
 		city: string;
-		zipCode: number;
+		zipCode: number | undefined;
 		state: string;
 	};
-	customFields: { name: string; type: string; value: string | number }[];
+	customFields: {
+		name: string;
+		type: string;
+		value: string | number | undefined;
+	}[];
 }

@@ -1,6 +1,6 @@
 import React from 'react';
-import OverflowMenu from './OverflowMenu';
-import AddPatient from './AddPatient';
+import OverflowMenu from '../OverflowMenu';
+import AddPatientButton from '../AddPatientButton';
 
 const Header = () => {
   return (
@@ -10,7 +10,7 @@ const Header = () => {
           <h1 className="text-3xl font-bold text-gray-900">Patient Dashboard</h1>
           <div className="flex">
             <OverflowMenu />
-            <AddPatient />
+            <AddPatientButton />
           </div>
         </div>
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import PatientList from '../components/PatientList'; // Assuming you have a PatientList component
-import '../app/globals.css';
 import { PatientsProvider } from '@/context/PatientContext';
-import Header from '@/components/Header';
+import Header from '@/components/common/Header';
 import { ProviderCustomFieldsProvider } from '@/context/ProviderCustomFieldsContext';
+import '../app/globals.css';
+import PatientList from '../components/PatientList'; 
 
 const Dashboard: React.FC = () => {
 	return (

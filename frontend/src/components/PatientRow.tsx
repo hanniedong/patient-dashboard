@@ -1,6 +1,6 @@
 import { Patient } from '@/types/patient.interface';
 import React, { useState } from 'react';
-import PatientFormDrawer from './PatientFormDrawer';
+import PatientFormDrawer from './PatientForm';
 
 interface Props {
 	patient: Patient;
@@ -10,7 +10,6 @@ interface Props {
 
 const PatientRow: React.FC<Props> = ({ patient, hiddenColumns, columns }) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-console.log(patient)
 	const handleClick = () => {
 		setIsDrawerOpen(!isDrawerOpen);
 	};
@@ -55,31 +54,32 @@ console.log(patient)
 		if (hiddenColumns.includes(columnName)) {
 			return null; // Don't render the column if it's hidden
 		}
+		const { street, city, state, zipCode, additionalAddress } = patient;
 
 		switch (columnName) {
 			case 'firstName':
 			case 'middleName':
 			case 'lastName':
 				return <td>{patient[columnName]}</td>;
-
 			case 'primaryAddress':
-				return (
+				return street && city && state && zipCode ? (
 					<td>
 						{patient.street}, {patient.city}, {patient.state}, {patient.zipCode}
 					</td>
+				) : (
+					<td></td>
 				);
 			case 'status':
 				return <td>{renderStatusPill()}</td>;
 			case 'additionalAddress':
-				return (
-					patient.additionalAddress ? (
-						<td>
-							{patient.additionalAddress.street},{' '}
-							{patient.additionalAddress.city},{' '}
-							{patient.additionalAddress.state},{' '}
-							{patient.additionalAddress.zipCode}
-						</td>
-					) : <td>{null}</td>
+				return additionalAddress?.street ? (
+					<td>
+						{additionalAddress.street},{additionalAddress.city},
+						{additionalAddress.state}
+						{additionalAddress.zipCode}
+					</td>
+				) : (
+					<td></td>
 				);
 
 			case 'dateOfBirth':
@@ -90,6 +90,8 @@ console.log(patient)
 					const customFieldValue = patient.customFields[columnName];
 					if (customFieldValue !== undefined) {
 						return <td>{customFieldValue}</td>;
+					} else {
+						return null;
 					}
 				}
 				return null;

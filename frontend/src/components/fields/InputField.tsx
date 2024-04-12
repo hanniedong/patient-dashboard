@@ -1,0 +1,28 @@
+import React from 'react';
+
+interface InputFieldProps {
+  label: string;
+  name: string;
+  value: string | number | undefined;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+}
+
+const InputField: React.FC<InputFieldProps> = ({ label, name, value, onChange }) => {
+  return (
+    <div className="mb-4">
+      <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+        {label}
+      </label>
+      <input
+        type="text"
+        name={name}
+        id={name}
+        value={value}
+        onChange={onChange}
+        className="mt-1 p-1 border border-gray-300 rounded-md w-full"
+      />
+    </div>
+  );
+};
+
+export default InputField;

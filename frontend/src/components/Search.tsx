@@ -24,7 +24,7 @@ const Search: React.FC<SearchProps> = ({ onSearch, clearFilters }) => {
 		city: ''
 	});
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = e.target;
 		setFilters({ ...filters, [name]: value });
 	};
@@ -35,26 +35,19 @@ const Search: React.FC<SearchProps> = ({ onSearch, clearFilters }) => {
 	};
 
 
-	const handleClearFilters = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleClearFilters = (e: React.FormEvent<HTMLButtonElement>) => {
 		e.preventDefault();
-
-		onSearch({
+		const initialState = {
 			firstName: '',
 			lastName: '',
 			status: '',
 			minAge: '',
 			maxAge: '',
 			city: '',
-		});
+		}
 
-		setFilters({
-			firstName: '',
-			lastName: '',
-			status: '',
-			minAge: '',
-			maxAge: '',
-			city: '',
-		})
+		onSearch(initialState);
+		setFilters(initialState)
 
 	};
 
@@ -99,7 +92,7 @@ const Search: React.FC<SearchProps> = ({ onSearch, clearFilters }) => {
 						onChange={handleChange}
 						className='border border-gray-300 rounded px-3 py-2 w-24 placeholder-gray-500 focus:outline-none focus:border-blue-500'
 					>
-						<option value=''>Select Status</option>
+						<option className='text-gray-50' value=''>Select Status</option>
 						<option value='Inquiry'>Inquiry</option>
 						<option value='Onboarding'>Onboarding</option>
 						<option value='Active'>Active</option>
