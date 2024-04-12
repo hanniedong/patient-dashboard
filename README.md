@@ -2,6 +2,13 @@
 
 The Advanced Patient Data Management System is a comprehensive web-based solution designed to provide healthcare providers with an improved platform for efficiently managing and viewing critical patient data. Providers require seamless access to patient information, including standard fields such as Names, Date of Birth, Status, Address, as well as the ability to customize additional fields dynamically.
 
+<img width="1767" alt="Screen Shot 2024-04-11 at 11 10 43 PM" src="https://github.com/hanniedong/patient-dashboard/assets/27251944/1c7843ed-a9e0-4f60-9ae2-20c59f4f9b97">
+
+Application Available Here: https://patient-dashboard-front-end.vercel.app
+
+
+
+
 ## Functional Requirements:
 
 ### Streamlined Data Entry:
