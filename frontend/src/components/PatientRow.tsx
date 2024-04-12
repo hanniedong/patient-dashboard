@@ -81,7 +81,6 @@ const PatientRow: React.FC<Props> = ({ patient, hiddenColumns, columns }) => {
 				) : (
 					<td></td>
 				);
-
 			case 'dateOfBirth':
 				return <td>{formattedDateOfBirth}</td>;
 
@@ -92,10 +91,10 @@ const PatientRow: React.FC<Props> = ({ patient, hiddenColumns, columns }) => {
 					if (customFieldValue) {
 						return <td>{customFieldValue}</td>;
 					} else {
-						return null;
+						return <td></td>;
 					}
 				}
-				return null;
+				return <td></td>;
 		}
 	};
 	return (
