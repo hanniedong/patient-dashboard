@@ -60,41 +60,41 @@ const PatientRow: React.FC<Props> = ({ patient, hiddenColumns, columns }) => {
 			case 'firstName':
 			case 'middleName':
 			case 'lastName':
-				return <td>{patient[columnName]}</td>;
+				return <td className='p-6'>{patient[columnName]}</td>;
 			case 'primaryAddress':
 				return street && city && state && zipCode ? (
-					<td>
+					<td className='p-6'>
 						{patient.street}, {patient.city}, {patient.state}, {patient.zipCode}
 					</td>
 				) : (
 					<td></td>
 				);
 			case 'status':
-				return <td>{renderStatusPill()}</td>;
+				return <td className='p-6'>{renderStatusPill()}</td>;
 			case 'additionalAddress':
 				return additionalAddress?.street ? (
-					<td>
-						{additionalAddress.street},{additionalAddress.city},
-						{additionalAddress.state}
+					<td className='p-6'>
+						{additionalAddress.street}, {additionalAddress.city}, 
+						{additionalAddress.state} 
 						{additionalAddress.zipCode}
 					</td>
 				) : (
-					<td></td>
+					<td className='p-6'></td>
 				);
 			case 'dateOfBirth':
-				return <td>{formattedDateOfBirth}</td>;
+				return <td className='p-6'>{formattedDateOfBirth}</td>;
 
 			default:
 				if (patient.customFields) {
 					//@ts-ignore
 					const customFieldValue = patient.customFields[columnName];
 					if (customFieldValue) {
-						return <td>{customFieldValue}</td>;
+						return <td className='p-6'>{customFieldValue}</td>;
 					} else {
-						return <td></td>;
+						return <td className='p-6'></td>;
 					}
 				}
-				return <td></td>;
+				return <td className='p-6'></td>;
 		}
 	};
 	return (
