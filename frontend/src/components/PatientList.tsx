@@ -65,7 +65,7 @@ const PatientList: React.FC = () => {
 		'lastName',
 		'status',
 		'primaryAddress',
-		'additionalAddresses',
+		'additionalAddress',
 		'dateOfBirth',
 		...customFields,
 	]; // Add more column names as needed

@@ -5,7 +5,15 @@ export interface Patient {
 	lastName: string;
 	dateOfBirth: Date;
 	status: string;
-	primaryAddress: string;
-	additionalAddresses: string[];
+	street: string;
+	city: string;
+	zipCode: number;
+	state: string;
+	additionalAddress: {
+		street: string;
+		city: string;
+		zipCode: number;
+		state: string;
+	};
 	customFields: { name: string; type: string; value: string | number }[];
 }

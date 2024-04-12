@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
@@ -6,16 +6,25 @@ import patientService from '@/services/patientService';
 import { usePatientsContext } from '@/context/PatientContext';
 import { Patient } from '@/types/patient.interface';
 import { useProviderCustomFieldsContext } from '@/context/ProviderCustomFieldsContext';
+import AddressField from './AddressFields';
 
 interface Props {
 	patient?: Patient;
 	isEdit?: Boolean;
 }
+
 const PatientFormDrawer: React.FC<Props> = ({ isEdit, patient }) => {
 	const { patients, setPatients } = usePatientsContext();
-	const { providerCustomFields, setProviderCustomFields } =
-		useProviderCustomFieldsContext();
+	const { providerCustomFields } = useProviderCustomFieldsContext();
 	const customFields: any = {};
+	const [
+		shouldShowAdditionalAddressFields,
+		setShouldShowAdditionalAddressFields,
+	] = useState(false);
+
+	const handleOnAdditionalAddressClick = () => {
+		setShouldShowAdditionalAddressFields(!shouldShowAdditionalAddressFields);
+	};
 
 	providerCustomFields.forEach((customField) => {
 		const name = customField.name;
@@ -29,20 +38,36 @@ const PatientFormDrawer: React.FC<Props> = ({ isEdit, patient }) => {
 		middleName: patient?.middleName || '',
 		lastName: patient?.lastName || '',
 		status: patient?.status || 'Inquiry',
-		primaryAddress: patient?.primaryAddress || '',
-		additionalAddresses: patient?.additionalAddresses || [],
-		dateOfBirth: patient?.dateOfBirth || (null as Date | null), // Explicitly set dateOfBirth type to Date | null
-		customFields,
+		street: patient?.street || '',
+		state: patient?.state || '',
+		city: patient?.city || '',
+		zipCode: patient?.zipCode || '',
+		additionalAddress: patient?.additionalAddress || {},
+		dateOfBirth: patient?.dateOfBirth || null,
+		customFields: patient?.customFields || {}
 	});
 
-console.log(formData)
 	const [isOpen, setIsOpen] = useState(true);
 
 	const handleCustomFieldsChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 	) => {
 		const { name, value } = e.target;
-		setFormData({ ...formData, customFields: { ...formData.customFields, [name]: value } });
+		setFormData({
+			...formData,
+			customFields: { ...formData.customFields, [name]: value },
+		});
+	};
+
+	const handleAdditionalAddressChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+	) => {
+		const { name, value } = e.target;
+
+		setFormData({
+			...formData,
+			additionalAddress: { ...formData.additionalAddress, [name]: value },
+		});
 	};
 
 	const handleChange = (
@@ -52,11 +77,10 @@ console.log(formData)
 		setFormData({ ...formData, [name]: value });
 	};
 
-	const handleDateChange = (date: Date) => {
-		if (date) {
-			setFormData({ ...formData, dateOfBirth: date });
-		}
+	const handleDateChange = (date: Date | null) => {
+		setFormData({ ...formData, dateOfBirth: date });
 	};
+
 	const handleDrawerClose = () => {
 		setIsOpen(false);
 	};
@@ -74,22 +98,20 @@ console.log(formData)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
 		try {
 			if (isEdit) {
-				console.log(patients);
 				const updatedPatient = await patientService.updatePatient(formData);
 				const updatedPatients = patients.map((p) =>
-					p._id === updatedPatient?._id ? updatedPatient : p
+					p._id === updatedPatient._id ? updatedPatient : p
 				);
 				setPatients(updatedPatients);
 			} else {
-				const patient = await patientService.createPatient(formData);
-				setPatients((prevPatients) => [...prevPatients, patient]);
+				const newPatient = await patientService.createPatient(formData);
+				setPatients([...patients, newPatient]);
 			}
 			setIsOpen(false);
 		} catch (error) {
-			console.error('Error creating patient:', error);
+			console.error('Error creating/updating patient:', error);
 		}
 	};
 
@@ -124,7 +146,11 @@ console.log(formData)
 						</svg>
 					</button>
 				</div>
-				<form onSubmit={handleSubmit} className='px-8 py-8 overflow-y-auto max-h-[calc(100vh-4rem)]'>
+				<form
+					onSubmit={handleSubmit}
+					className='px-8 py-8 overflow-y-auto max-h-[calc(100vh-4rem)]'
+				>
+					{/* Form fields */}
 					<div className='mb-4'>
 						<label
 							htmlFor='firstName'
@@ -183,7 +209,6 @@ console.log(formData)
 						<DatePicker
 							id='dateOfBirth'
 							value={formData.dateOfBirth}
-							// @ts-ignore
 							onChange={handleDateChange}
 							dateFormat='MM/dd/yyyy'
 							placeholderText='MM/DD/YYYY'
@@ -209,59 +234,50 @@ console.log(formData)
 							<option value='Churned'>Churned</option>
 						</select>
 					</div>
+					{/* Address fields */}
+					<AddressField handleChange={handleChange} formData={formData} />
+					{/* Additional address fields */}
 					<div className='mb-4'>
-						<label
-							htmlFor='primaryAddress'
-							className='block text-sm font-medium text-gray-700'
+						<button
+							type='button'
+							onClick={handleOnAdditionalAddressClick}
+							className='flex items-center text-sm text-blue-500 focus:outline-none'
 						>
-							Primary Address
-						</label>
-						<input
-							type='text'
-							name='primaryAddress'
-							id='primaryAddress'
-							value={formData.primaryAddress}
-							onChange={handleChange}
-							className='mt-1 p-1 border border-gray-300 rounded-md w-full'
-						/>
-					</div>
-					<div className='mb-4'>
-						<label
-							htmlFor='additionalAddresses'
-							className='block text-sm font-medium text-gray-700'
-						>
-							Additional Addresses
-						</label>
-						<input
-							type='text'
-							name='additionalAddresses'
-							id='additionalAddresses'
-							value={formData.additionalAddresses.join(', ')}
-							onChange={handleChange}
-							className='mt-1 p-1 border border-gray-300 rounded-md w-full'
-						/>
-					</div>
-					{providerCustomFields.length !==0 && providerCustomFields.map((customField) => {
-						const name = customField.name
-						const formValue = formData?.customFields[name]?.value
-						return(
-						<div className='mb-4' key={customField._id}>
-							<label
-								htmlFor={name}
-								className='block text-sm font-medium text-gray-700'
-							>
-								{name}
-							</label>
-							<input
-								type={customField.type}
-								name={name}
-								id={name}
-								value={formValue}
-								onChange={handleCustomFieldsChange}
-								className='mt-1 p-1 border border-gray-300 rounded-md w-full'
+							{!shouldShowAdditionalAddressFields
+								? ' Show Additional Address Fields'
+								: 'Hide Additional Address Fields'}
+						</button>
+						{shouldShowAdditionalAddressFields && (
+							<AddressField
+								isAdditionalAddress={true}
+								handleChange={handleAdditionalAddressChange}
+								formData={formData}
 							/>
-						</div>
-					)})}
+						)}
+					</div>
+					{/* Custom fields */}
+					{providerCustomFields.length !== 0 &&
+						providerCustomFields.map((customField) => {
+							console.log(formData.customFields[customField.name])
+							return(
+							<div className='mb-4' key={customField._id}>
+								<label
+									htmlFor={customField.name}
+									className='block text-sm font-medium text-gray-700'
+								>
+									{customField.name}
+								</label>
+								<input
+									type={customField.type}
+									name={customField.name}
+									id={customField.name}
+									value={formData.customFields[customField.name]}
+									onChange={handleCustomFieldsChange}
+									className='mt-1 p-1 border border-gray-300 rounded-md w-full'
+								/>
+							</div>
+						)})}
+					{/* Buttons */}
 					<div className='mt-4 flex justify-end'>
 						<button
 							type='button'
@@ -278,16 +294,17 @@ console.log(formData)
 						</button>
 					</div>
 				</form>
-				<div className='flex items-center justify-center'>
-					{isEdit && (
+				{/* Delete button */}
+				{isEdit && (
+					<div className='flex items-center justify-center'>
 						<button
 							onClick={handleDelete}
 							className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded flex justify-center'
 						>
 							Delete
 						</button>
-					)}
-				</div>
+					</div>
+				)}
 			</div>
 		</>
 	);

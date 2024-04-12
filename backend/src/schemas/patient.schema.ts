@@ -21,11 +21,20 @@ export class Patient extends Document {
   })
   status: string;
 
-  @Prop(String)
-  primaryAddress: string;
+  @Prop()
+  street: string;
 
-  @Prop([String])
-  additionalAddresses: string[];
+  @Prop()
+  city: string;
+
+  @Prop()
+  state: string;
+
+  @Prop()
+  zipCode: number;
+
+  @Prop({ type: Object })
+  additionalAddress: object;
 
   @Prop({ type: Types.ObjectId, ref: 'Provider' }) // Reference to the Provider entity
   providerId: string; // You can also use Types.ObjectId type here

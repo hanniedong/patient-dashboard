@@ -28,7 +28,7 @@ const patientService = {
 	},
 	createPatient: async (patientData: any) => {
 		console.log(patientData);
-		const response = await axios.post<Patient>(`${BASE_URL}/patients`, {
+		const response = await axios.post<Patient>(`${DEV_URL}/patients`, {
 			...patientData,
 			providerId: '6610a8796dacee7e4a036f64',
 		});

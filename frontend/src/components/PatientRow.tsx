@@ -1,5 +1,5 @@
 import { Patient } from '@/types/patient.interface';
-import React, { Dispatch, useState } from 'react';
+import React, { useState } from 'react';
 import PatientFormDrawer from './PatientFormDrawer';
 
 interface Props {
@@ -10,9 +10,8 @@ interface Props {
 
 const PatientRow: React.FC<Props> = ({ patient, hiddenColumns, columns }) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+console.log(patient)
 	const handleClick = () => {
-		console.log('HIT');
 		setIsDrawerOpen(!isDrawerOpen);
 	};
 
@@ -56,32 +55,46 @@ const PatientRow: React.FC<Props> = ({ patient, hiddenColumns, columns }) => {
 		if (hiddenColumns.includes(columnName)) {
 			return null; // Don't render the column if it's hidden
 		}
+
 		switch (columnName) {
 			case 'firstName':
-				return <td>{patient.firstName}</td>;
 			case 'middleName':
-				return <td>{patient.middleName}</td>;
 			case 'lastName':
-				return <td>{patient.lastName}</td>;
+				return <td>{patient[columnName]}</td>;
+
+			case 'primaryAddress':
+				return (
+					<td>
+						{patient.street}, {patient.city}, {patient.state}, {patient.zipCode}
+					</td>
+				);
 			case 'status':
 				return <td>{renderStatusPill()}</td>;
-			case 'primaryAddress':
-				return <td>{patient.primaryAddress}</td>;
-			case 'additionalAddresses':
-				return <td>{patient.additionalAddresses.join(', ')}</td>;
+			case 'additionalAddress':
+				return (
+					patient.additionalAddress ? (
+						<td>
+							{patient.additionalAddress.street},{' '}
+							{patient.additionalAddress.city},{' '}
+							{patient.additionalAddress.state},{' '}
+							{patient.additionalAddress.zipCode}
+						</td>
+					) : <td>{null}</td>
+				);
+
 			case 'dateOfBirth':
 				return <td>{formattedDateOfBirth}</td>;
+
 			default:
 				if (patient.customFields) {
-					for (const [key, value] of Object.entries(patient.customFields)) {
-						if(key === columnName){
-							return <td>{value}</td>;
-						}
+					const customFieldValue = patient.customFields[columnName];
+					if (customFieldValue !== undefined) {
+						return <td>{customFieldValue}</td>;
 					}
 				}
+				return null;
 		}
 	};
-
 	return (
 		<>
 			{isDrawerOpen && <PatientFormDrawer isEdit patient={patient} />}
